@@ -3,39 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin — Penny's Pup Truck</title>
+<title>Admin Sign In — Penny's Pup Truck</title>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
-
-  /* ====== CONFIG — fill this in ====== */
-  /* Set your Google OAuth Client ID below (see instructions at the bottom of this file). */
-
   :root{
     --cream: #FDF1F7;
     --choc: #4B3358;
     --choc-soft: #7A5F86;
     --cherry: #EE7DA6;
     --cherry-dark: #D45C87;
-    --sky: #9C87CF;
-    --mustard: #F0BB7D;
-    --white: #FFFBFE;
     --danger: #D4514C;
-    --radius: 16px;
   }
-
   *{ box-sizing: border-box; }
   body{
     margin:0;
     background: var(--cream);
     color: var(--choc);
     font-family: 'Nunito', sans-serif;
-    min-height: 100vh;
-  }
-  h1, h2, h3{ font-family:'Baloo 2', sans-serif; margin:0; }
-
-  /* ---------- LOGIN SCREEN ---------- */
-  #login-screen{
     min-height: 100vh;
     display:flex;
     align-items:center;
@@ -45,16 +30,13 @@
     padding: 20px;
     text-align: center;
   }
-  #login-screen h1{ font-size: 2rem; color: var(--cherry-dark); }
-  #login-screen p{ color: var(--choc-soft); font-weight:600; max-width: 40ch; }
+  h1{ font-family:'Baloo 2', sans-serif; font-size: 1.8rem; color: var(--cherry-dark); margin:0; }
+  p{ color: var(--choc-soft); font-weight:600; max-width: 40ch; margin:0; }
   #login-status{
+    display:none;
     font-weight: 800;
     padding: 10px 18px;
     border-radius: 999px;
-    display:none;
-  }
-  #login-status.denied{
-    display:inline-block;
     background: #FCE4E1;
     color: var(--danger);
     border: 2px solid var(--danger);
@@ -65,611 +47,79 @@
     border: 2px solid #E8B23A;
     color: #6B4F0E;
     padding: 14px 18px;
-    border-radius: var(--radius);
+    border-radius: 16px;
     max-width: 60ch;
     font-weight: 600;
     text-align: left;
   }
   #config-warning code{ background: rgba(0,0,0,.06); padding: 2px 6px; border-radius: 6px; }
-
-  /* ---------- ADMIN PANEL ---------- */
-  #admin-panel{ display:none; padding-bottom: 100px; }
-
-  .admin-header{
-    background: var(--white);
-    border-bottom: 3px solid var(--choc);
-    padding: 16px 24px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    position: sticky;
-    top: 0;
-    z-index: 20;
-  }
-  .admin-header h1{ font-size: 1.3rem; color: var(--cherry-dark); }
-  .admin-header .user-info{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    font-weight:700;
-    font-size:.9rem;
-    color: var(--choc-soft);
-  }
-  .admin-header img{ width:32px; height:32px; border-radius:50%; }
-  .admin-header button{
-    background:none;
-    border: 2px solid var(--choc);
-    border-radius: 999px;
-    padding: 6px 14px;
-    font-weight:800;
-    font-family:'Nunito',sans-serif;
-    cursor:pointer;
-    color: var(--choc);
-  }
-
-  .admin-body{
-    max-width: 860px;
-    margin: 0 auto;
-    padding: 30px 24px;
-  }
-
-  .section-card{
-    background: var(--white);
-    border: 3px solid var(--choc);
-    border-radius: var(--radius);
-    padding: 24px;
-    margin-bottom: 24px;
-  }
-  .section-card h2{
-    font-size: 1.3rem;
+  #success{
+    display:none;
+    font-weight: 800;
     color: var(--cherry-dark);
-    margin-bottom: 6px;
   }
-  .section-card .hint{
-    color: var(--choc-soft);
-    font-weight:600;
-    font-size: .9rem;
-    margin-bottom: 18px;
-  }
-
-  label{
-    display:block;
-    font-weight: 800;
-    font-size: .85rem;
-    margin-bottom: 4px;
-    margin-top: 14px;
-  }
-  label:first-of-type{ margin-top:0; }
-  input[type=text], input[type=url], textarea{
-    width:100%;
-    padding: 10px 12px;
-    border: 2px solid var(--choc-soft);
-    border-radius: 10px;
-    font-family:'Nunito',sans-serif;
-    font-size: .95rem;
-    background: var(--cream);
-    color: var(--choc);
-  }
-  textarea{ resize: vertical; min-height: 60px; }
-  input:focus, textarea:focus{ outline: 3px solid var(--sky); outline-offset: 1px; }
-
-  .repeat-item{
-    border: 2px dashed var(--choc-soft);
-    border-radius: 12px;
-    padding: 16px;
-    margin-bottom: 14px;
-    position: relative;
-  }
-  .repeat-item .remove-btn{
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: var(--danger);
-    color: white;
-    border: none;
-    border-radius: 999px;
-    width: 26px;
-    height: 26px;
-    font-weight: 800;
-    cursor: pointer;
-    line-height: 1;
-  }
-  .add-btn{
-    background: var(--white);
-    border: 2px dashed var(--cherry-dark);
-    color: var(--cherry-dark);
-    border-radius: 10px;
-    padding: 10px 16px;
-    font-weight: 800;
-    font-family: 'Nunito', sans-serif;
-    cursor: pointer;
-    width: 100%;
-  }
-  .add-btn:hover{ background: var(--cream); }
-
-  .image-upload{
-    display:flex;
-    align-items:center;
-    gap: 14px;
-    margin-top: 8px;
-  }
-  .image-upload img{
-    width: 64px;
-    height: 64px;
-    object-fit: cover;
-    border-radius: 12px;
-    border: 2px solid var(--choc);
-    background: var(--cream);
-  }
-  .image-upload input[type=file]{ font-size: .85rem; font-weight:600; }
-
-  /* ---------- STICKY SAVE BAR ---------- */
-  #save-bar{
-    position: fixed;
-    bottom: 0; left:0; right:0;
-    background: var(--white);
-    border-top: 3px solid var(--choc);
-    padding: 14px 24px;
-    display:flex;
-    align-items:center;
-    justify-content: space-between;
-    z-index: 30;
-    box-shadow: 0 -4px 16px rgba(75,51,88,.1);
-  }
-  #save-status{ font-weight: 700; color: var(--choc-soft); font-size: .9rem; }
-  #save-status.unsaved{ color: var(--danger); }
-  #save-btn{
-    background: var(--cherry);
-    color: var(--white);
-    border: 3px solid var(--choc);
-    border-radius: 999px;
-    padding: 12px 28px;
-    font-family: 'Baloo 2', sans-serif;
-    font-weight: 700;
-    font-size: 1.05rem;
-    cursor: pointer;
-    box-shadow: 0 5px 0 var(--choc);
-  }
-  #save-btn:active{ transform: translateY(3px); box-shadow: 0 2px 0 var(--choc); }
-
-  .instructions{
-    background: var(--white);
-    border: 3px solid var(--sky);
-    border-radius: var(--radius);
-    padding: 20px 24px;
-    margin-bottom: 24px;
-    font-weight: 600;
-    font-size: .92rem;
-    line-height: 1.6;
-  }
-  .instructions h2{ color: var(--sky); font-size: 1.1rem; margin-bottom: 8px; }
-  .instructions ol{ padding-left: 20px; margin: 0; }
-  .instructions code{ background: var(--cream); padding: 2px 6px; border-radius: 6px; }
-
+  a.back-link{ color: var(--choc-soft); font-weight: 700; text-decoration: underline; }
 </style>
 </head>
 <body>
 
-<!-- ============ LOGIN SCREEN ============ -->
-<div id="login-screen">
   <h1>🐾 Penny's Pup Truck — Admin</h1>
   <p>Sign in with the Google account that manages this site.</p>
   <div id="google-signin-button"></div>
   <div id="login-status"></div>
+  <div id="success">Signed in! Taking you to the site…</div>
   <div id="config-warning">
-    <strong>Setup needed:</strong> This admin page needs a Google OAuth Client ID before sign-in will work.
-    See the instructions in a comment at the bottom of <code>admin.html</code> for how to create one and where to paste it in.
+    <strong>Setup needed:</strong> This page needs a Google OAuth Client ID before sign-in will work.
+    See the instructions in a comment at the bottom of this file's source for how to create one.
   </div>
-</div>
-
-<!-- ============ ADMIN PANEL ============ -->
-<div id="admin-panel">
-  <div class="admin-header">
-    <h1>🐾 Penny's Pup Truck — Admin</h1>
-    <div class="user-info">
-      <img id="user-avatar" src="" alt="">
-      <span id="user-email"></span>
-      <button id="signout-btn">Sign out</button>
-    </div>
-  </div>
-
-  <div class="admin-body">
-
-    <div class="instructions">
-      <h2>How this works</h2>
-      <ol>
-        <li>Make your edits below.</li>
-        <li>Click <strong>Save changes</strong> — this downloads an updated <code>content.json</code> file.</li>
-        <li>Replace the <code>content.json</code> file in your GitHub repo with the downloaded one.</li>
-        <li>Commit and push — your live site updates automatically.</li>
-      </ol>
-    </div>
-
-    <!-- Hero -->
-    <div class="section-card">
-      <h2>Homepage banner</h2>
-      <div class="hint">The big headline text at the top of your site.</div>
-      <label>Small tag above the headline</label>
-      <input type="text" id="hero-eyebrow">
-      <label>Headline — first line</label>
-      <input type="text" id="hero-titleLine1">
-      <label>Headline — highlighted word/phrase</label>
-      <input type="text" id="hero-titleHighlight">
-      <label>Headline — last line</label>
-      <input type="text" id="hero-titleLine2">
-      <label>Short description below the headline</label>
-      <textarea id="hero-lede"></textarea>
-    </div>
-
-    <!-- News -->
-    <div class="section-card">
-      <h2>News &amp; announcements</h2>
-      <div class="hint">Shows up as a "Latest news" section on your site. Leave empty to hide it.</div>
-      <div id="news-list"></div>
-      <button type="button" class="add-btn" id="add-news">+ Add news item</button>
-    </div>
-
-    <!-- Menu -->
-    <div class="section-card">
-      <h2>Menu items</h2>
-      <div class="hint">Name, description, and price for each thing you sell.</div>
-      <div id="menu-list"></div>
-      <button type="button" class="add-btn" id="add-menu">+ Add menu item</button>
-    </div>
-
-    <!-- Schedule -->
-    <div class="section-card">
-      <h2>Weekly schedule</h2>
-      <div class="hint">Where and when to find the truck.</div>
-      <div id="schedule-list"></div>
-      <button type="button" class="add-btn" id="add-schedule">+ Add stop</button>
-    </div>
-
-    <!-- About -->
-    <div class="section-card">
-      <h2>About Penny</h2>
-      <label>First paragraph</label>
-      <textarea id="about-paragraph1"></textarea>
-      <label>Second paragraph</label>
-      <textarea id="about-paragraph2"></textarea>
-    </div>
-
-    <!-- Social & Footer -->
-    <div class="section-card">
-      <h2>Social links &amp; footer</h2>
-      <label>Instagram link</label>
-      <input type="url" id="social-instagram" placeholder="https://instagram.com/...">
-      <label>Facebook link</label>
-      <input type="url" id="social-facebook" placeholder="https://facebook.com/...">
-      <label>Text list signup link</label>
-      <input type="url" id="social-textList" placeholder="https://...">
-      <label>Footer tagline</label>
-      <input type="text" id="footer-tagline">
-    </div>
-
-    <!-- Photos -->
-    <div class="section-card">
-      <h2>Photos &amp; logos</h2>
-      <div class="hint">Upload a new image to replace one on the site. Leave as-is to keep the current one.</div>
-
-      <label>Logo icon (top-left of the site)</label>
-      <div class="image-upload">
-        <img id="preview-navLogo" src="">
-        <input type="file" accept="image/*" data-target="navLogo">
-      </div>
-
-      <label>Truck illustration (homepage banner)</label>
-      <div class="image-upload">
-        <img id="preview-truck" src="">
-        <input type="file" accept="image/*" data-target="truck">
-      </div>
-
-      <label>Penny's photo (About section)</label>
-      <div class="image-upload">
-        <img id="preview-aboutPhoto" src="">
-        <input type="file" accept="image/*" data-target="aboutPhoto">
-      </div>
-    </div>
-
-  </div>
-
-  <div id="save-bar">
-    <span id="save-status">No changes yet</span>
-    <button id="save-btn">Save changes</button>
-  </div>
-</div>
+  <a href="index.html" class="back-link">← Back to the site</a>
 
 <script>
   // ============================================================
   // CONFIG — paste your Google OAuth Client ID here
   // ============================================================
-  const GOOGLE_CLIENT_ID = "PASTE_YOUR_GOOGLE_CLIENT_ID_HERE.apps.googleusercontent.com";
+  const GOOGLE_CLIENT_ID = "282672384779-dnvi5jc5jbdmqdi140p4pa54ast1jd7q.apps.googleusercontent.com";
   const ADMIN_EMAIL = "gaporp456@gmail.com";
+  const SESSION_LENGTH_HOURS = 12;
   // ============================================================
 
-  let state = null;      // holds the working copy of content.json
-  let dirty = false;      // true once the person makes an edit
-
-  function markDirty(){
-    dirty = true;
-    const el = document.getElementById('save-status');
-    el.textContent = 'Unsaved changes';
-    el.classList.add('unsaved');
-  }
-  function markClean(){
-    dirty = false;
-    const el = document.getElementById('save-status');
-    el.textContent = 'All changes saved';
-    el.classList.remove('unsaved');
-  }
-
-  window.addEventListener('beforeunload', (e) => {
-    if (dirty) { e.preventDefault(); e.returnValue = ''; }
-  });
-
-  // ---------- Load current content.json ----------
-  async function loadContent(){
-    const fallback = {
-      siteName: "", hero: {eyebrow:"",titleLine1:"",titleHighlight:"",titleLine2:"",lede:""},
-      news: [], menu: [], schedule: [],
-      about: {paragraph1:"",paragraph2:""},
-      social: {instagram:"",facebook:"",textList:""},
-      footerTagline: "", images: {navLogo:null, truck:null, aboutPhoto:null}
-    };
-    try {
-      // cache-busting query param so we never edit a stale cached copy
-      const res = await fetch('content.json?_=' + Date.now(), { cache: 'no-store' });
-
-      if (!res.ok) {
-        alert(
-          `Could not find content.json (server responded ${res.status}).\n\n` +
-          `Check that:\n` +
-          `• content.json is in the SAME folder as admin.html in your repo\n` +
-          `• both files have been pushed to GitHub\n` +
-          `• you're viewing this page at your live github.io URL, not as a local file\n\n` +
-          `Starting with a blank form for now — any changes you save will create a fresh content.json.`
-        );
-        state = fallback;
-        renderForm();
-        return;
-      }
-
-      const text = await res.text();
-      try {
-        state = JSON.parse(text);
-      } catch (parseErr) {
-        alert(
-          `content.json was found, but wasn't valid JSON (the server returned something else, ` +
-          `like an HTML page). This usually means the file path is wrong or GitHub Pages hasn't ` +
-          `finished deploying yet — try again in a minute.\n\n` +
-          `Starting with a blank form for now.`
-        );
-        state = fallback;
-        renderForm();
-        return;
-      }
-    } catch (err) {
-      alert('Could not load content.json automatically. Make sure admin.html sits in the same folder as content.json on your live site (this page needs to be opened via your GitHub Pages URL, not as a local file).');
-      state = fallback;
-    }
-    renderForm();
-  }
-
-  // ---------- Render form fields from state ----------
-  function renderForm(){
-    document.getElementById('hero-eyebrow').value = state.hero?.eyebrow || '';
-    document.getElementById('hero-titleLine1').value = state.hero?.titleLine1 || '';
-    document.getElementById('hero-titleHighlight').value = state.hero?.titleHighlight || '';
-    document.getElementById('hero-titleLine2').value = state.hero?.titleLine2 || '';
-    document.getElementById('hero-lede').value = state.hero?.lede || '';
-
-    document.getElementById('about-paragraph1').value = state.about?.paragraph1 || '';
-    document.getElementById('about-paragraph2').value = state.about?.paragraph2 || '';
-
-    document.getElementById('social-instagram').value = state.social?.instagram || '';
-    document.getElementById('social-facebook').value = state.social?.facebook || '';
-    document.getElementById('social-textList').value = state.social?.textList || '';
-    document.getElementById('footer-tagline').value = state.footerTagline || '';
-
-    renderRepeatable('news-list', state.news || [], newsItemTemplate);
-    renderRepeatable('menu-list', state.menu || [], menuItemTemplate);
-    renderRepeatable('schedule-list', state.schedule || [], scheduleItemTemplate);
-
-    ['navLogo','truck','aboutPhoto'].forEach(key => {
-      const img = document.getElementById('preview-' + key);
-      if (state.images && state.images[key]) {
-        img.src = state.images[key];
-      } else {
-        img.src = '';
-        img.style.background = '#FDF1F7';
-      }
-    });
-  }
-
-  function renderRepeatable(containerId, items, templateFn){
-    const container = document.getElementById(containerId);
-    container.innerHTML = '';
-    items.forEach((item, i) => container.appendChild(templateFn(item, i)));
-  }
-
-  function newsItemTemplate(item, i){
-    const div = document.createElement('div');
-    div.className = 'repeat-item';
-    div.innerHTML = `
-      <button type="button" class="remove-btn" data-list="news" data-index="${i}">&times;</button>
-      <label>Date (optional)</label>
-      <input type="text" data-list="news" data-index="${i}" data-field="date" value="${escapeAttr(item.date||'')}">
-      <label>Title</label>
-      <input type="text" data-list="news" data-index="${i}" data-field="title" value="${escapeAttr(item.title||'')}">
-      <label>Details</label>
-      <textarea data-list="news" data-index="${i}" data-field="body">${escapeHtml(item.body||'')}</textarea>
-    `;
-    return div;
-  }
-
-  function menuItemTemplate(item, i){
-    const div = document.createElement('div');
-    div.className = 'repeat-item';
-    div.innerHTML = `
-      <button type="button" class="remove-btn" data-list="menu" data-index="${i}">&times;</button>
-      <label>Item name</label>
-      <input type="text" data-list="menu" data-index="${i}" data-field="name" value="${escapeAttr(item.name||'')}">
-      <label>Description</label>
-      <textarea data-list="menu" data-index="${i}" data-field="description">${escapeHtml(item.description||'')}</textarea>
-      <label>Price</label>
-      <input type="text" data-list="menu" data-index="${i}" data-field="price" value="${escapeAttr(item.price||'')}">
-    `;
-    return div;
-  }
-
-  function scheduleItemTemplate(item, i){
-    const div = document.createElement('div');
-    div.className = 'repeat-item';
-    div.innerHTML = `
-      <button type="button" class="remove-btn" data-list="schedule" data-index="${i}">&times;</button>
-      <label>Day</label>
-      <input type="text" data-list="schedule" data-index="${i}" data-field="day" value="${escapeAttr(item.day||'')}">
-      <label>Location</label>
-      <input type="text" data-list="schedule" data-index="${i}" data-field="place" value="${escapeAttr(item.place||'')}">
-      <label>Time</label>
-      <input type="text" data-list="schedule" data-index="${i}" data-field="time" value="${escapeAttr(item.time||'')}">
-    `;
-    return div;
-  }
-
-  function escapeHtml(str){
-    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  }
-  function escapeAttr(str){
-    return String(str).replace(/&/g,'&amp;').replace(/"/g,'&quot;');
-  }
-
-  // ---------- Wire up simple field inputs ----------
-  function bindSimpleField(id, path){
-    document.getElementById(id).addEventListener('input', (e) => {
-      const keys = path.split('.');
-      let obj = state;
-      for (let i = 0; i < keys.length - 1; i++) obj = obj[keys[i]];
-      obj[keys[keys.length-1]] = e.target.value;
-      markDirty();
-    });
-  }
-
-  function wireSimpleFields(){
-    bindSimpleField('hero-eyebrow', 'hero.eyebrow');
-    bindSimpleField('hero-titleLine1', 'hero.titleLine1');
-    bindSimpleField('hero-titleHighlight', 'hero.titleHighlight');
-    bindSimpleField('hero-titleLine2', 'hero.titleLine2');
-    bindSimpleField('hero-lede', 'hero.lede');
-    bindSimpleField('about-paragraph1', 'about.paragraph1');
-    bindSimpleField('about-paragraph2', 'about.paragraph2');
-    bindSimpleField('social-instagram', 'social.instagram');
-    bindSimpleField('social-facebook', 'social.facebook');
-    bindSimpleField('social-textList', 'social.textList');
-    bindSimpleField('footer-tagline', 'footerTagline');
-  }
-
-  // ---------- Wire up repeatable list edits (event delegation) ----------
-  function wireRepeatableEdits(){
-    document.getElementById('admin-body') // no-op guard, replaced below
-  }
-  document.addEventListener('input', (e) => {
-    const list = e.target.dataset.list;
-    const field = e.target.dataset.field;
-    const index = e.target.dataset.index;
-    if (list && field && index !== undefined) {
-      state[list][index][field] = e.target.value;
-      markDirty();
-    }
-  });
-  document.addEventListener('click', (e) => {
-    if (e.target.classList.contains('remove-btn')) {
-      const list = e.target.dataset.list;
-      const index = parseInt(e.target.dataset.index, 10);
-      state[list].splice(index, 1);
-      renderForm();
-      markDirty();
-    }
-  });
-
-  document.getElementById('add-news').addEventListener('click', () => {
-    state.news = state.news || [];
-    state.news.push({ date: '', title: '', body: '' });
-    renderForm();
-    markDirty();
-  });
-  document.getElementById('add-menu').addEventListener('click', () => {
-    state.menu = state.menu || [];
-    state.menu.push({ name: '', description: '', price: '' });
-    renderForm();
-    markDirty();
-  });
-  document.getElementById('add-schedule').addEventListener('click', () => {
-    state.schedule = state.schedule || [];
-    state.schedule.push({ day: '', place: '', time: '' });
-    renderForm();
-    markDirty();
-  });
-
-  // ---------- Image uploads ----------
-  document.querySelectorAll('input[type=file]').forEach(input => {
-    input.addEventListener('change', (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
-      const key = e.target.dataset.target;
-      const reader = new FileReader();
-      reader.onload = (ev) => {
-        state.images = state.images || {};
-        state.images[key] = ev.target.result;
-        document.getElementById('preview-' + key).src = ev.target.result;
-        markDirty();
-      };
-      reader.readAsDataURL(file);
-    });
-  });
-
-  // ---------- Save (download updated content.json) ----------
-  document.getElementById('save-btn').addEventListener('click', () => {
-    const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'content.json';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-    markClean();
-  });
-
-  // ---------- Google Sign-In ----------
   function decodeJwt(token){
     const base64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
     return JSON.parse(decodeURIComponent(escape(atob(base64))));
   }
 
   function handleCredentialResponse(response){
-    const payload = decodeJwt(response.credential);
     const statusEl = document.getElementById('login-status');
-    if (payload.email === ADMIN_EMAIL && payload.email_verified) {
-      document.getElementById('login-screen').style.display = 'none';
-      document.getElementById('admin-panel').style.display = 'block';
-      document.getElementById('user-avatar').src = payload.picture;
-      document.getElementById('user-email').textContent = payload.email;
-      wireSimpleFields();
-      loadContent();
-    } else {
-      statusEl.textContent = `"${payload.email}" isn't the admin account for this site.`;
-      statusEl.classList.add('denied');
+    try {
+      if (!response || !response.credential) {
+        throw new Error('No credential received from Google.');
+      }
+      const payload = decodeJwt(response.credential);
+
+      if (payload.email === ADMIN_EMAIL && payload.email_verified) {
+        localStorage.setItem('pptAdminSession', JSON.stringify({
+          email: payload.email,
+          exp: Date.now() + SESSION_LENGTH_HOURS * 60 * 60 * 1000
+        }));
+        document.getElementById('success').style.display = 'block';
+        document.getElementById('google-signin-button').style.display = 'none';
+        statusEl.style.display = 'none';
+        setTimeout(() => { window.location.href = 'index.html'; }, 900);
+      } else {
+        statusEl.textContent = `"${payload.email}" isn't the admin account for this site.`;
+        statusEl.style.display = 'inline-block';
+      }
+    } catch (err) {
+      statusEl.textContent = 'Sign-in error: ' + err.message;
+      statusEl.style.display = 'inline-block';
+      console.error('Sign-in error:', err);
     }
   }
 
-  document.getElementById('signout-btn').addEventListener('click', () => {
-    if (dirty && !confirm('You have unsaved changes. Sign out anyway?')) return;
-    document.getElementById('admin-panel').style.display = 'none';
-    document.getElementById('login-screen').style.display = 'flex';
-    document.getElementById('login-status').style.display = 'none';
-    document.getElementById('login-status').classList.remove('denied');
+  window.addEventListener('error', (e) => {
+    const statusEl = document.getElementById('login-status');
+    statusEl.textContent = 'Page error: ' + e.message;
+    statusEl.style.display = 'inline-block';
   });
 
   window.onload = () => {
@@ -677,14 +127,24 @@
       document.getElementById('config-warning').style.display = 'block';
       return;
     }
-    google.accounts.id.initialize({
-      client_id: GOOGLE_CLIENT_ID,
-      callback: handleCredentialResponse
-    });
-    google.accounts.id.renderButton(
-      document.getElementById('google-signin-button'),
-      { theme: 'outline', size: 'large', text: 'signin_with' }
-    );
+    try {
+      if (typeof google === 'undefined' || !google.accounts) {
+        throw new Error('Google sign-in script did not load (an ad blocker or browser privacy setting may be blocking accounts.google.com).');
+      }
+      google.accounts.id.initialize({
+        client_id: GOOGLE_CLIENT_ID,
+        callback: handleCredentialResponse
+      });
+      google.accounts.id.renderButton(
+        document.getElementById('google-signin-button'),
+        { theme: 'outline', size: 'large', text: 'signin_with' }
+      );
+    } catch (err) {
+      const statusEl = document.getElementById('login-status');
+      statusEl.textContent = err.message;
+      statusEl.style.display = 'inline-block';
+      console.error(err);
+    }
   };
 </script>
 
@@ -692,34 +152,34 @@
 ============================================================
  SETUP INSTRUCTIONS — Google Sign-In
 ============================================================
-This admin page restricts access to gaporp456@gmail.com using
-Google Sign-In. To turn it on, you need a free Google OAuth
-Client ID:
+This page restricts access to gaporp456@gmail.com using Google
+Sign-In. To turn it on, you need a free Google OAuth Client ID:
 
 1. Go to https://console.cloud.google.com/apis/credentials
 2. Create a new project (or pick an existing one).
 3. Click "+ CREATE CREDENTIALS" → "OAuth client ID".
 4. If asked, configure the "OAuth consent screen" first:
      - User type: External
-     - Fill in app name (e.g. "Penny's Pup Truck Admin"),
-       your email for support/contact, then save through the
-       remaining steps (you can leave scopes/test users default).
+     - Fill in app name, your email for support/contact, save
+       through the remaining steps (defaults are fine).
 5. Back at "Create OAuth client ID":
      - Application type: Web application
      - Name: anything, e.g. "Pup Truck Admin"
-     - Authorized JavaScript origins: add your GitHub Pages URL,
-       e.g. https://gphillips15.github.io
-       (no trailing slash, no path after it)
-6. Click Create. Copy the "Client ID" it gives you
-   (ends in .apps.googleusercontent.com).
-7. Paste it into this file, replacing:
-       const GOOGLE_CLIENT_ID = "PASTE_YOUR_GOOGLE_CLIENT_ID_HERE...";
-   with your real client ID, keeping the quotes.
-8. Save, push to GitHub, and open admin.html on your live site
+     - Authorized JavaScript origins: add your GitHub Pages
+       domain only, with no path and no trailing slash, e.g.:
+         https://gphillips15.github.io
+6. Click Create. Copy the "Client ID" (ends in
+   .apps.googleusercontent.com) and paste it into the
+   GOOGLE_CLIENT_ID line near the top of this file's script.
+7. Save, push to GitHub, and open admin.html on your LIVE site
    (not as a local file — Google Sign-In requires https).
 
-Only sign-ins from gaporp456@gmail.com will unlock the editor;
-anyone else sees a "not the admin account" message.
+Once signed in, you're redirected to index.html where an
+"Editing" toolbar appears at the bottom of the page — click
+directly on any text to edit it, or on a photo to replace it.
+Click "Save changes" when done to download an updated
+content.json, then push that file to GitHub like any other
+update.
 ============================================================
 -->
 
