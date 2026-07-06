@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,700&display=swap" rel="stylesheet">
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
 
   :root{
@@ -402,7 +403,166 @@
   }
 
   :focus-visible{ outline: 3px solid var(--sky); outline-offset: 2px; }
+
+  /* ---------- INLINE EDIT MODE ---------- */
+  .menu-card, .news-card, .stop-card{ position: relative; }
+
+  [contenteditable="true"]{
+    outline: 2px dashed var(--sky);
+    outline-offset: 3px;
+    border-radius: 4px;
+    cursor: text;
+  }
+  [contenteditable="true"]:focus{
+    outline: 2px solid var(--cherry);
+    background: rgba(156,135,207,.08);
+  }
+  .editable-img{ cursor: pointer; outline: 3px dashed var(--sky); outline-offset: 2px; }
+  .editable-link{ outline: 2px dashed var(--sky); outline-offset: 3px; border-radius: 4px; }
+
+  .remove-item-btn{
+    position: absolute;
+    top: 8px; right: 8px;
+    background: #D4514C;
+    color: white;
+    border: none;
+    border-radius: 999px;
+    width: 24px; height: 24px;
+    font-weight: 800;
+    cursor: pointer;
+    line-height: 1;
+    z-index: 5;
+  }
+  .add-item-btn{
+    background: var(--white);
+    border: 2px dashed var(--cherry-dark);
+    color: var(--cherry-dark);
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-weight: 800;
+    font-family: 'Nunito', sans-serif;
+    font-size: .95rem;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 8px;
+  }
+  .add-item-btn:hover{ background: var(--cream); }
+
+  .admin-toolbar{
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: var(--choc);
+    color: var(--white);
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 999;
+    box-shadow: 0 -4px 16px rgba(0,0,0,.2);
+  }
+  .admin-toolbar .status{ font-weight: 700; font-size: .9rem; opacity: .9; }
+  .admin-toolbar .actions{ display: flex; gap: 10px; }
+  .admin-toolbar button{
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+    border-radius: 999px;
+    padding: 10px 22px;
+    cursor: pointer;
+    border: 2px solid var(--white);
+    font-size: .95rem;
+  }
+  .admin-toolbar .save-btn{ background: var(--cherry); color: var(--white); border-color: var(--white); }
+  .admin-toolbar .exit-btn{ background: transparent; color: var(--white); }
+
+  .admin-btn{
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: .75rem;
+    text-decoration: none;
+    color: var(--cream);
+    opacity: .35;
+    transition: opacity .15s ease;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+  }
+  .admin-btn:hover{ opacity: .8; }
+  body.admin-edit-mode .admin-btn{ display: none; }
+
+  .signin-overlay{
+    position: fixed;
+    inset: 0;
+    background: rgba(75,51,88,.55);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .signin-card{
+    background: var(--white);
+    border: 3px solid var(--choc);
+    border-radius: 20px;
+    padding: 32px 28px;
+    max-width: 340px;
+    width: 100%;
+    text-align: center;
+    position: relative;
+    box-shadow: var(--shadow);
+  }
+  .signin-card h3{ font-size: 1.3rem; color: var(--cherry-dark); margin-bottom: 8px; }
+  .signin-card p{ color: var(--choc-soft); font-weight: 600; font-size: .9rem; margin-bottom: 18px; }
+  .signin-card #google-signin-button{ display: flex; justify-content: center; }
+  .signin-close{
+    position: absolute;
+    top: 10px; right: 14px;
+    background: none;
+    border: none;
+    font-size: 1.4rem;
+    color: var(--choc-soft);
+    cursor: pointer;
+    line-height: 1;
+  }
+  #signin-status{
+    display: none;
+    margin-top: 14px;
+    font-weight: 700;
+    font-size: .85rem;
+    color: #D4514C;
+    background: #FCE4E1;
+    border: 2px solid #D4514C;
+    border-radius: 10px;
+    padding: 8px 12px;
+  }
+
+  /* clearer hover cues while actively editing */
+  body.admin-edit-mode [contenteditable="true"]:hover{
+    background: rgba(156,135,207,.12);
+  }
+  body.admin-edit-mode [contenteditable="true"]::after{
+    content: '✏️';
+    font-size: .7em;
+    opacity: 0;
+    margin-left: 4px;
+  }
+  body.admin-edit-mode [contenteditable="true"]:hover::after{ opacity: .6; }
+  .editable-img:hover{ filter: brightness(.85); }
+
+  .edit-mode-banner{
+    display:none;
+    background: var(--sky);
+    color: var(--white);
+    text-align: center;
+    font-weight: 700;
+    font-size: .9rem;
+    padding: 10px 20px;
+  }
+  body.admin-edit-mode .edit-mode-banner{ display:block; }
+
+  body.admin-edit-mode{ padding-bottom: 70px; }
 </style>
+
 </head>
 <body>
 
@@ -420,6 +580,8 @@
     </ul>
   </div>
 </nav>
+
+<div class="edit-mode-banner">✏️ You're editing this site — click any text or photo to change it, use the + buttons to add items, then hit "Save changes" below when you're done.</div>
 
 <header class="hero">
   <div class="wrap">
@@ -514,8 +676,31 @@
     <div class="logo">🐾 <span id="footer-name">Penny's Pup Truck</span></div>
     <p id="footer-tagline">Serving pup cups &amp; cute dog things around town.</p>
     <p>© <span id="year"></span> <span id="footer-name-2">Penny's Pup Truck</span>. All good dogs welcome.</p>
+    <p><button type="button" class="admin-btn" id="admin-open-btn">Admin</button></p>
   </div>
 </footer>
+
+<div class="signin-overlay" id="signin-overlay" style="display:none;">
+  <div class="signin-card">
+    <button type="button" class="signin-close" id="signin-close-btn">&times;</button>
+    <h3>🐾 Admin Sign In</h3>
+    <p>Sign in with the Google account that manages this site.</p>
+    <div id="google-signin-button"></div>
+    <div id="signin-status"></div>
+  </div>
+</div>
+
+<div class="admin-toolbar" id="admin-toolbar" style="display:none;">
+  <span class="status" id="admin-status">Editing</span>
+  <div class="actions">
+    <button class="save-btn" id="edit-save-btn">Save changes</button>
+    <button class="exit-btn" id="edit-signout-btn">Sign out</button>
+  </div>
+</div>
+
+<input type="file" id="file-navLogo" accept="image/*" style="display:none">
+<input type="file" id="file-truck" accept="image/*" style="display:none">
+<input type="file" id="file-aboutPhoto" accept="image/*" style="display:none">
 
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
@@ -528,99 +713,339 @@
   }, { threshold: 0.3 });
   document.querySelectorAll('.paw').forEach(el => observer.observe(el));
 
-  // ---------- Load editable content from content.json ----------
+  // ---------- Admin session + inline Google Sign-In ----------
+  const ADMIN_EMAIL = "gaporp456@gmail.com";
+  const GOOGLE_CLIENT_ID = "282672384779-dnvi5jc5jbdmqdi140p4pa54ast1jd7q.apps.googleusercontent.com";
+  const SESSION_LENGTH_HOURS = 12;
+
+  function getAdminSession(){
+    try {
+      const raw = localStorage.getItem('pptAdminSession');
+      if (!raw) return null;
+      const session = JSON.parse(raw);
+      if (session.email === ADMIN_EMAIL && session.exp > Date.now()) return session;
+      localStorage.removeItem('pptAdminSession');
+      return null;
+    } catch { return null; }
+  }
+
+  function decodeJwt(token){
+    const base64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+    return JSON.parse(decodeURIComponent(escape(atob(base64))));
+  }
+
+  let googleInitialized = false;
+  function initGoogleSignIn(){
+    if (googleInitialized) return;
+    try {
+      if (typeof google === 'undefined' || !google.accounts) {
+        throw new Error('Google sign-in script did not load (an ad blocker or privacy setting may be blocking it).');
+      }
+      google.accounts.id.initialize({
+        client_id: GOOGLE_CLIENT_ID,
+        callback: handleCredentialResponse
+      });
+      google.accounts.id.renderButton(
+        document.getElementById('google-signin-button'),
+        { theme: 'outline', size: 'large', text: 'signin_with' }
+      );
+      googleInitialized = true;
+    } catch (err) {
+      const statusEl = document.getElementById('signin-status');
+      statusEl.textContent = err.message;
+      statusEl.style.display = 'block';
+      console.error(err);
+    }
+  }
+
+  function handleCredentialResponse(response){
+    const statusEl = document.getElementById('signin-status');
+    try {
+      if (!response || !response.credential) throw new Error('No credential received from Google.');
+      const payload = decodeJwt(response.credential);
+
+      if (payload.email === ADMIN_EMAIL && payload.email_verified) {
+        const session = { email: payload.email, exp: Date.now() + SESSION_LENGTH_HOURS * 60 * 60 * 1000 };
+        localStorage.setItem('pptAdminSession', JSON.stringify(session));
+        document.getElementById('signin-overlay').style.display = 'none';
+        statusEl.style.display = 'none';
+        enableEditMode(session);
+      } else {
+        statusEl.textContent = `"${payload.email}" isn't the admin account for this site.`;
+        statusEl.style.display = 'block';
+      }
+    } catch (err) {
+      statusEl.textContent = 'Sign-in error: ' + err.message;
+      statusEl.style.display = 'block';
+      console.error(err);
+    }
+  }
+
+  document.getElementById('admin-open-btn').addEventListener('click', () => {
+    document.getElementById('signin-overlay').style.display = 'flex';
+    initGoogleSignIn();
+  });
+  document.getElementById('signin-close-btn').addEventListener('click', () => {
+    document.getElementById('signin-overlay').style.display = 'none';
+  });
+
+  // ---------- State + rendering ----------
+  let state = null;
+  let dirty = false;
   const genericIconSvg = `<svg width="28" height="28" viewBox="0 0 24 24" fill="none"><ellipse cx="12" cy="15" rx="6" ry="4.5" stroke="#4B3358" stroke-width="1.8"/><ellipse cx="7" cy="9" rx="2.2" ry="2.8" stroke="#4B3358" stroke-width="1.8"/><ellipse cx="17" cy="9" rx="2.2" ry="2.8" stroke="#4B3358" stroke-width="1.8"/><ellipse cx="9.5" cy="6" rx="1.8" ry="2.3" stroke="#4B3358" stroke-width="1.8"/><ellipse cx="14.5" cy="6" rx="1.8" ry="2.3" stroke="#4B3358" stroke-width="1.8"/></svg>`;
 
+  function setDeep(obj, path, value){
+    const keys = path.split('.');
+    let o = obj;
+    for (let i = 0; i < keys.length - 1; i++) o = o[keys[i]];
+    o[keys[keys.length - 1]] = value;
+  }
+
+  function bindTextEl(el, path, isHtml){
+    if (!el) return;
+    el.dataset.bind = path;
+    const value = path.split('.').reduce((o,k)=>o?.[k], state);
+    if (isHtml) el.innerHTML = value || ''; else el.textContent = value || '';
+  }
+
+  function renderStatic(){
+    bindTextEl(document.getElementById('hero-eyebrow'), 'hero.eyebrow');
+    bindTextEl(document.getElementById('hero-lede'), 'hero.lede');
+    bindTextEl(document.getElementById('about-p1'), 'about.paragraph1');
+    bindTextEl(document.getElementById('about-p2'), 'about.paragraph2');
+    bindTextEl(document.getElementById('footer-tagline'), 'footerTagline', true);
+    bindTextEl(document.getElementById('footer-name'), 'siteName');
+    bindTextEl(document.getElementById('footer-name-2'), 'siteName');
+
+    const title = document.getElementById('hero-title');
+    if (title) {
+      title.innerHTML = `<span data-bind="hero.titleLine1">${state.hero.titleLine1||''}</span><br><span class="hl" data-bind="hero.titleHighlight">${state.hero.titleHighlight||''}</span>,<br><span data-bind="hero.titleLine2">${state.hero.titleLine2||''}</span>`;
+    }
+
+    const ig = document.getElementById('link-instagram');
+    const fb = document.getElementById('link-facebook');
+    const tx = document.getElementById('link-textlist');
+    if (ig) ig.href = state.social?.instagram || '#';
+    if (fb) fb.href = state.social?.facebook || '#';
+    if (tx) tx.href = state.social?.textList || '#';
+    if (ig) ig.dataset.socialKey = 'instagram';
+    if (fb) fb.dataset.socialKey = 'facebook';
+    if (tx) tx.dataset.socialKey = 'textList';
+
+    if (state.images) {
+      const navLogo = document.getElementById('nav-logo-img');
+      const truckImg = document.getElementById('truck-img');
+      const aboutImg = document.getElementById('about-photo-img');
+      if (state.images.navLogo && navLogo) navLogo.src = state.images.navLogo;
+      if (state.images.truck && truckImg) truckImg.src = state.images.truck;
+      if (state.images.aboutPhoto && aboutImg) aboutImg.src = state.images.aboutPhoto;
+    }
+  }
+
+  function renderNews(editMode){
+    const newsSection = document.getElementById('news');
+    const newsList = document.getElementById('news-list');
+    if (!newsSection || !newsList) return;
+    const items = state.news || [];
+    if (items.length === 0 && !editMode) { newsSection.style.display = 'none'; return; }
+    newsSection.style.display = '';
+    newsList.innerHTML = items.map((item, i) => `
+      <div class="news-card">
+        ${editMode ? `<button class="remove-item-btn" data-list="news" data-index="${i}">&times;</button>` : ''}
+        ${item.date || editMode ? `<div class="news-date" ${editMode ? `contenteditable="true" data-list="news" data-index="${i}" data-field="date"` : ''}>${item.date||''}</div>` : ''}
+        <h3 ${editMode ? `contenteditable="true" data-list="news" data-index="${i}" data-field="title"` : ''}>${item.title||''}</h3>
+        <p ${editMode ? `contenteditable="true" data-list="news" data-index="${i}" data-field="body"` : ''}>${item.body||''}</p>
+      </div>
+    `).join('');
+    if (editMode) {
+      const btn = document.createElement('button');
+      btn.className = 'add-item-btn';
+      btn.textContent = '+ Add news item';
+      btn.onclick = () => { state.news = state.news || []; state.news.push({date:'',title:'New update',body:''}); markDirty(); renderNews(true); };
+      newsList.after(btn);
+      document.querySelectorAll('#news-list ~ .add-item-btn').forEach((b,i,arr)=>{ if(i<arr.length-1) b.remove(); });
+    }
+  }
+
+  function renderMenu(editMode){
+    const menuGrid = document.getElementById('menu-grid');
+    if (!menuGrid) return;
+    const items = state.menu || [];
+    menuGrid.innerHTML = items.map((item, i) => `
+      <div class="menu-card">
+        ${editMode ? `<button class="remove-item-btn" data-list="menu" data-index="${i}">&times;</button>` : ''}
+        <div class="icon">${genericIconSvg}</div>
+        <h3 ${editMode ? `contenteditable="true" data-list="menu" data-index="${i}" data-field="name"` : ''}>${item.name||''}</h3>
+        <p ${editMode ? `contenteditable="true" data-list="menu" data-index="${i}" data-field="description"` : ''}>${item.description||''}</p>
+        <span class="price-tag" ${editMode ? `contenteditable="true" data-list="menu" data-index="${i}" data-field="price"` : ''}>${item.price||''}</span>
+      </div>
+    `).join('');
+    const parent = menuGrid.parentElement;
+    parent.querySelectorAll('.add-item-btn').forEach(b => b.remove());
+    if (editMode) {
+      const btn = document.createElement('button');
+      btn.className = 'add-item-btn';
+      btn.textContent = '+ Add menu item';
+      btn.onclick = () => { state.menu = state.menu || []; state.menu.push({name:'New item',description:'',price:''}); markDirty(); renderMenu(true); };
+      parent.appendChild(btn);
+    }
+  }
+
+  function renderSchedule(editMode){
+    const scheduleList = document.getElementById('schedule-list');
+    if (!scheduleList) return;
+    const items = state.schedule || [];
+    scheduleList.innerHTML = items.map((stop, i) => `
+      <div class="stop-card">
+        ${editMode ? `<button class="remove-item-btn" data-list="schedule" data-index="${i}">&times;</button>` : ''}
+        <div class="day" ${editMode ? `contenteditable="true" data-list="schedule" data-index="${i}" data-field="day"` : ''}>${stop.day||''}</div>
+        <div class="place" ${editMode ? `contenteditable="true" data-list="schedule" data-index="${i}" data-field="place"` : ''}>${stop.place||''}</div>
+        <div class="time" ${editMode ? `contenteditable="true" data-list="schedule" data-index="${i}" data-field="time"` : ''}>${stop.time||''}</div>
+      </div>
+    `).join('');
+    const parent = scheduleList.parentElement;
+    parent.querySelectorAll('.add-item-btn').forEach(b => b.remove());
+    if (editMode) {
+      const btn = document.createElement('button');
+      btn.className = 'add-item-btn';
+      btn.textContent = '+ Add stop';
+      btn.onclick = () => { state.schedule = state.schedule || []; state.schedule.push({day:'',place:'',time:''}); markDirty(); renderSchedule(true); };
+      parent.appendChild(btn);
+    }
+  }
+
+  function renderAll(editMode){
+    renderStatic();
+    renderNews(editMode);
+    renderMenu(editMode);
+    renderSchedule(editMode);
+  }
+
+  function markDirty(){
+    dirty = true;
+    const el = document.getElementById('admin-status');
+    if (el) el.textContent = 'Unsaved changes';
+  }
+  function markClean(){
+    dirty = false;
+    const el = document.getElementById('admin-status');
+    if (el) el.textContent = 'All changes saved';
+  }
+
+  // ---------- Enable edit mode ----------
+  function enableEditMode(session){
+    document.body.classList.add('admin-edit-mode');
+    document.getElementById('admin-toolbar').style.display = 'flex';
+    document.getElementById('admin-status').textContent = `Editing as ${session.email}`;
+
+    renderAll(true);
+
+    // Make simple bound text elements editable
+    document.querySelectorAll('[data-bind]').forEach(el => {
+      el.contentEditable = 'true';
+      el.addEventListener('input', () => {
+        setDeep(state, el.dataset.bind, el.innerHTML.includes('<') ? el.innerHTML : el.textContent);
+        markDirty();
+      });
+    });
+
+    // Event delegation for list field edits + removals
+    document.addEventListener('input', (e) => {
+      const { list, field, index } = e.target.dataset;
+      if (list && field && index !== undefined) {
+        state[list][index][field] = e.target.textContent;
+        markDirty();
+      }
+    });
+    document.addEventListener('click', (e) => {
+      if (e.target.classList.contains('remove-item-btn')) {
+        const { list, index } = e.target.dataset;
+        state[list].splice(parseInt(index,10), 1);
+        markDirty();
+        if (list === 'news') renderNews(true);
+        if (list === 'menu') renderMenu(true);
+        if (list === 'schedule') renderSchedule(true);
+      }
+    });
+
+    // Images — click to replace
+    const imageMap = { 'nav-logo-img': 'navLogo', 'truck-img': 'truck', 'about-photo-img': 'aboutPhoto' };
+    Object.entries(imageMap).forEach(([imgId, key]) => {
+      const img = document.getElementById(imgId);
+      if (!img) return;
+      img.classList.add('editable-img');
+      img.title = 'Click to replace this image';
+      img.addEventListener('click', () => document.getElementById('file-' + key).click());
+    });
+    ['navLogo','truck','aboutPhoto'].forEach(key => {
+      document.getElementById('file-' + key).addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          state.images = state.images || {};
+          state.images[key] = ev.target.result;
+          const targetId = Object.keys(imageMap).find(k => imageMap[k] === key);
+          document.getElementById(targetId).src = ev.target.result;
+          markDirty();
+        };
+        reader.readAsDataURL(file);
+      });
+    });
+
+    // Social links — click to edit URL instead of navigating
+    document.querySelectorAll('[data-social-key]').forEach(link => {
+      link.classList.add('editable-link');
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const key = link.dataset.socialKey;
+        const current = state.social?.[key] || '';
+        const next = prompt('Enter the URL for this link:', current);
+        if (next !== null) {
+          state.social = state.social || {};
+          state.social[key] = next;
+          link.href = next;
+          markDirty();
+        }
+      });
+    });
+
+    // Save
+    document.getElementById('edit-save-btn').addEventListener('click', () => {
+      const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'content.json';
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      markClean();
+    });
+
+    // Sign out
+    document.getElementById('edit-signout-btn').addEventListener('click', () => {
+      if (dirty && !confirm('You have unsaved changes. Sign out anyway?')) return;
+      localStorage.removeItem('pptAdminSession');
+      location.reload();
+    });
+
+    window.addEventListener('beforeunload', (e) => {
+      if (dirty) { e.preventDefault(); e.returnValue = ''; }
+    });
+  }
+
+  // ---------- Load content, then render ----------
   fetch('content.json?_=' + Date.now(), { cache: 'no-store' })
     .then(res => {
       if (!res.ok) throw new Error('content.json not found (status ' + res.status + ')');
       return res.json();
     })
     .then(data => {
-      // Hero
-      if (data.hero) {
-        const eyebrow = document.getElementById('hero-eyebrow');
-        const title = document.getElementById('hero-title');
-        const lede = document.getElementById('hero-lede');
-        if (eyebrow) eyebrow.textContent = data.hero.eyebrow;
-        if (title) title.innerHTML = `${data.hero.titleLine1}<br><span class="hl">${data.hero.titleHighlight}</span>,<br>${data.hero.titleLine2}`;
-        if (lede) lede.textContent = data.hero.lede;
-      }
-
-      // News (hidden if empty)
-      const newsSection = document.getElementById('news');
-      const newsList = document.getElementById('news-list');
-      if (newsSection && newsList && Array.isArray(data.news) && data.news.length > 0) {
-        newsList.innerHTML = data.news.map(item => `
-          <div class="news-card">
-            ${item.date ? `<div class="news-date">${item.date}</div>` : ''}
-            <h3>${item.title}</h3>
-            <p>${item.body}</p>
-          </div>
-        `).join('');
-        newsSection.style.display = '';
-      }
-
-      // Menu
-      const menuGrid = document.getElementById('menu-grid');
-      if (menuGrid && Array.isArray(data.menu)) {
-        menuGrid.innerHTML = data.menu.map(item => `
-          <div class="menu-card">
-            <div class="icon">${genericIconSvg}</div>
-            <h3>${item.name}</h3>
-            <p>${item.description}</p>
-            <span class="price-tag">${item.price}</span>
-          </div>
-        `).join('');
-      }
-
-      // Schedule
-      const scheduleList = document.getElementById('schedule-list');
-      if (scheduleList && Array.isArray(data.schedule)) {
-        scheduleList.innerHTML = data.schedule.map(stop => `
-          <div class="stop-card">
-            <div class="day">${stop.day}</div>
-            <div class="place">${stop.place}</div>
-            <div class="time">${stop.time}</div>
-          </div>
-        `).join('');
-      }
-
-      // About
-      if (data.about) {
-        const p1 = document.getElementById('about-p1');
-        const p2 = document.getElementById('about-p2');
-        if (p1) p1.textContent = data.about.paragraph1;
-        if (p2) p2.textContent = data.about.paragraph2;
-      }
-
-      // Social links
-      if (data.social) {
-        const ig = document.getElementById('link-instagram');
-        const fb = document.getElementById('link-facebook');
-        const tx = document.getElementById('link-textlist');
-        if (ig) ig.href = data.social.instagram || '#';
-        if (fb) fb.href = data.social.facebook || '#';
-        if (tx) tx.href = data.social.textList || '#';
-      }
-
-      // Site name + footer
-      if (data.siteName) {
-        document.querySelectorAll('#footer-name, #footer-name-2').forEach(el => el.textContent = data.siteName);
-      }
-      if (data.footerTagline) {
-        const tagline = document.getElementById('footer-tagline');
-        if (tagline) tagline.innerHTML = data.footerTagline;
-      }
-
-      // Optional image overrides (only replace if a new image was uploaded in admin)
-      if (data.images) {
-        const navLogo = document.getElementById('nav-logo-img');
-        const truckImg = document.getElementById('truck-img');
-        const aboutImg = document.getElementById('about-photo-img');
-        if (data.images.navLogo && navLogo) navLogo.src = data.images.navLogo;
-        if (data.images.truck && truckImg) truckImg.src = data.images.truck;
-        if (data.images.aboutPhoto && aboutImg) aboutImg.src = data.images.aboutPhoto;
+      state = data;
+      const session = getAdminSession();
+      if (session) {
+        enableEditMode(session);
+      } else {
+        renderAll(false);
       }
     })
     .catch(err => console.error('Could not load content.json', err));
