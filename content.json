@@ -1,0 +1,70 @@
+{
+  "siteName": "Penny's Pup Truck",
+  "hero": {
+    "eyebrow": "🐾 Now serving your neighborhood",
+    "titleLine1": "Pup cups, treats &amp;",
+    "titleHighlight": "tail-wag energy",
+    "titleLine2": "on wheels.",
+    "lede": "Penny's Pup Truck rolls up with whipped-cream pup cups, fresh-baked bites, and cute little things for the good dog in your life."
+  },
+  "news": [],
+  "menu": [
+    {
+      "id": "item-1",
+      "name": "The Classic Pup Cup",
+      "description": "House whipped cream in a mini cup, dusted with a peanut butter drizzle.",
+      "price": "$3.50"
+    },
+    {
+      "id": "item-2",
+      "name": "Frozen Bark-y Pops",
+      "description": "Pupsicles in pumpkin, blueberry, or banana — served straight from the freezer window.",
+      "price": "$4.00"
+    },
+    {
+      "id": "item-3",
+      "name": "Bakery Bites Box",
+      "description": "A little box of soft-baked treats — carrot ginger, pumpkin oat, and PB banana.",
+      "price": "$7.50"
+    },
+    {
+      "id": "item-4",
+      "name": "Birthday Pup Box",
+      "description": "A cup, a bandana, and a candle biscuit for the dog turning any age at all.",
+      "price": "$14.00"
+    },
+    {
+      "id": "item-5",
+      "name": "The Bark Bar",
+      "description": "Bandanas, bow ties, and matching leash charms — pick your pup's look.",
+      "price": "from $6"
+    },
+    {
+      "id": "item-6",
+      "name": "Pack Punch Card",
+      "description": "Buy 9 pup cups, the 10th's on the house. Stamped truck-side, every visit.",
+      "price": "free to join"
+    }
+  ],
+  "schedule": [
+    { "day": "Thursday", "place": "Riverside Dog Park", "time": "4:00 – 7:00 PM" },
+    { "day": "Friday", "place": "Maple Street Farmers Market", "time": "3:00 – 6:30 PM" },
+    { "day": "Saturday", "place": "Downtown Plaza", "time": "11:00 AM – 3:00 PM" },
+    { "day": "Sunday", "place": "West View Community Field", "time": "12:00 – 4:00 PM" }
+  ],
+  "about": {
+    "paragraph1": "Penny's Pup Truck started as one very good dog's excuse for her owner to bake too many treats. Now she rides shotgun on every route, quality-checking each batch of pup cups before they go out the window.",
+    "paragraph2": "Every recipe is dog-safe first: no xylitol, no chocolate, no added sugar — just things a vet would nod along to."
+  },
+  "social": {
+    "instagram": "#",
+    "facebook": "#",
+    "textList": "#"
+  },
+  "footerTagline": "Serving pup cups &amp; cute dog things around town.",
+  "images": {
+    "navLogo": null,
+    "truck": null,
+    "aboutPhoto": null
+  }
+}
