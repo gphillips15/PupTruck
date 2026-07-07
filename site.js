@@ -297,6 +297,7 @@
       <div class="stop-card">
         ${editMode ? `<button class="remove-item-btn" data-list="schedule" data-index="${i}">&times;</button>` : ''}
         <div class="day" ${editMode ? `contenteditable="true" data-list="schedule" data-index="${i}" data-field="day"` : ''}>${stop.day||''}</div>
+        <div class="date" ${editMode ? `contenteditable="true" data-list="schedule" data-index="${i}" data-field="date"` : ''}>${stop.date||''}</div>
         <div class="place" ${editMode ? `contenteditable="true" data-list="schedule" data-index="${i}" data-field="place"` : ''}>${stop.place||''}</div>
         <div class="time" ${editMode ? `contenteditable="true" data-list="schedule" data-index="${i}" data-field="time"` : ''}>${stop.time||''}</div>
         ${editMode
@@ -310,7 +311,7 @@
       const btn = document.createElement('button');
       btn.className = 'add-item-btn';
       btn.textContent = '+ Add stop';
-      btn.onclick = () => { state.schedule = state.schedule || []; state.schedule.push({day:'',place:'',time:'',address:''}); markDirty(); renderSchedule(true); };
+      btn.onclick = () => { state.schedule = state.schedule || []; state.schedule.push({day:'',date:'',place:'',time:'',address:''}); markDirty(); renderSchedule(true); };
       parent.appendChild(btn);
     }
     if (!editMode) {
@@ -330,6 +331,7 @@
     teaser.innerHTML = `
       <div class="stop-card">
         <div class="day">${next.day||''}</div>
+        <div class="date">${next.date||''}</div>
         <div class="place">${next.place||''}</div>
         <div class="time">${next.time||''}</div>
         ${next.address ? `<button class="directions-btn" id="teaser-directions-btn">📍 Get Directions</button>` : ''}

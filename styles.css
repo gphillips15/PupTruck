@@ -64,6 +64,9 @@
     color: var(--cherry-dark);
   }
   .nav .logo img{ width:34px; height:34px; flex-shrink:0; }
+  .logo-icon-link{ display:flex; align-items:center; text-decoration:none; }
+  .logo-text-link{ color: var(--cherry-dark); text-decoration:none; }
+  .logo-text-link:hover{ text-decoration: underline; }
   .logo-icon{
     width: 34px;
     height: 34px;
@@ -315,6 +318,7 @@
     margin-bottom: 4px;
   }
   .stop-card .place{ font-weight: 700; }
+  .stop-card .date{ font-weight: 700; opacity: .85; font-size: .9rem; margin-bottom: 2px; }
   .stop-card .time{ font-weight:600; opacity:.9; font-size: .92rem; margin-top:4px; }
 
   /* ---------- ABOUT ---------- */

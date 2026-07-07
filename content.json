@@ -51,25 +51,29 @@
       "day": "Thursday",
       "place": "Riverside Dog Park",
       "time": "4:00 – 7:00 PM",
-"address": "708 Duncan Ave."
+      "address": "708 Duncan Ave.",
+      "date": "July 9"
     },
     {
       "day": "Friday",
       "place": "Maple Street Farmers Market",
       "time": "3:00 – 6:30 PM",
-      "address": ""
+      "address": "",
+      "date": "July 10"
     },
     {
       "day": "Saturday",
       "place": "Downtown Plaza",
       "time": "11:00 AM – 3:00 PM",
-      "address": ""
+      "address": "",
+      "date": "July 11"
     },
     {
       "day": "Sunday",
       "place": "West View Community Field",
       "time": "12:00 – 4:00 PM",
-      "address": ""
+      "address": "",
+      "date": "July 12"
     }
   ],
   "about": {
