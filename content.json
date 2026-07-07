@@ -24,7 +24,7 @@
     {
       "id": "item-3",
       "name": "Bakery Bites Box",
-      "description": "A little box of soft-baked treats — carrot ginger, pumpkin oat, and Peanut butter.",
+      "description": "A little box of soft-baked treats — carrot ginger, pumpkin oat, and PB banana.",
       "price": "$7.50"
     },
     {
@@ -50,27 +50,32 @@
     {
       "day": "Thursday",
       "place": "Riverside Dog Park",
-      "time": "4:00 – 7:00 PM"
+      "time": "4:00 – 7:00 PM",
+      "address": ""
     },
     {
       "day": "Friday",
       "place": "Maple Street Farmers Market",
-      "time": "3:00 – 6:30 PM"
+      "time": "3:00 – 6:30 PM",
+      "address": ""
     },
     {
       "day": "Saturday",
       "place": "Downtown Plaza",
-      "time": "11:00 AM – 3:00 PM"
+      "time": "11:00 AM – 3:00 PM",
+      "address": ""
     },
     {
       "day": "Sunday",
       "place": "West View Community Field",
-      "time": "12:00 – 4:00 PM"
+      "time": "12:00 – 4:00 PM",
+      "address": ""
     }
   ],
   "about": {
-    "paragraph1": "Penny's Pup Truck started as one very good dog's excuse for her owner to bake too many treats. Now she rides shotgun on every route, quality-checking each batch of pup cups before they go out the window.",
-    "paragraph2": "Every recipe is dog-safe first: no xylitol, no chocolate, no added sugar — just things a vet would nod along to."
+    "paragraph1": "Penny is a 3-year-old mini bernedoodle with a serious pup cup habit. Before she takes a single lick, she does her signature move — a little lip-and-nose smack, every single time, like she's warming up.",
+    "paragraph2": "She's sampled pup cups from coffee shops all over Pittsburgh (very dedicated research), and that taste-testing is exactly what gave us the idea to start making our own — fun, healthy, and genuinely delicious treats made just for dogs.",
+    "paragraph3": "When she's not on truck duty, Penny's happiest at the beach, chasing a ball, or getting an extra-big pup cup from her Mimi (no judgment here)."
   },
   "social": {
     "instagram": "#",
@@ -81,6 +86,11 @@
   "images": {
     "navLogo": null,
     "truck": null,
-    "aboutPhoto": null
+    "aboutPhoto": null,
+    "collage": [
+      "images/collage-1.jpg",
+      "images/collage-2.jpg",
+      "images/collage-3.jpg"
+    ]
   }
 }

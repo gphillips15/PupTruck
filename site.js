@@ -192,6 +192,7 @@
     bindTextEl(document.getElementById('hero-lede'), 'hero.lede');
     bindTextEl(document.getElementById('about-p1'), 'about.paragraph1');
     bindTextEl(document.getElementById('about-p2'), 'about.paragraph2');
+    bindTextEl(document.getElementById('about-p3'), 'about.paragraph3');
     bindTextEl(document.getElementById('footer-tagline'), 'footerTagline', true);
     bindTextEl(document.getElementById('footer-name'), 'siteName');
     bindTextEl(document.getElementById('footer-name-2'), 'siteName');
@@ -354,6 +355,39 @@
     document.getElementById('directions-overlay').style.display = 'none';
   });
 
+  // ---------- Photo collage (About page) ----------
+  let collageEditIndex = null;
+  function renderCollage(editMode){
+    const grid = document.getElementById('about-collage');
+    if (!grid) return;
+    const photos = (state.images && state.images.collage) || [];
+    grid.innerHTML = photos.map((src, i) => `
+      <div class="collage-item">
+        ${editMode ? `<button class="remove-item-btn" data-collage-remove="${i}">&times;</button>` : ''}
+        <img src="${src}" alt="Photo of Penny" class="${editMode ? 'editable-img' : ''}" data-collage-replace="${i}">
+      </div>
+    `).join('');
+    const parent = grid.parentElement;
+    parent.querySelectorAll('.add-item-btn').forEach(b => b.remove());
+    if (editMode) {
+      grid.querySelectorAll('[data-collage-replace]').forEach(img => {
+        img.title = 'Click to replace this photo';
+        img.addEventListener('click', () => {
+          collageEditIndex = parseInt(img.dataset.collageReplace, 10);
+          document.getElementById('file-collage').click();
+        });
+      });
+      const btn = document.createElement('button');
+      btn.className = 'add-item-btn';
+      btn.textContent = '+ Add photo';
+      btn.onclick = () => {
+        collageEditIndex = -1;
+        document.getElementById('file-collage').click();
+      };
+      parent.appendChild(btn);
+    }
+  }
+
   function renderAll(editMode){
     renderStatic();
     renderNews(editMode);
@@ -361,6 +395,7 @@
     renderMenuTeaser();
     renderSchedule(editMode);
     renderFindTeaser();
+    renderCollage(editMode);
   }
 
   function markDirty(){
@@ -401,7 +436,15 @@
     });
     document.addEventListener('click', (e) => {
       if (e.target.classList.contains('remove-item-btn')) {
-        const { list, index } = e.target.dataset;
+        const { list, index, collageRemove } = e.target.dataset;
+        if (collageRemove !== undefined) {
+          state.images = state.images || {};
+          state.images.collage = state.images.collage || [];
+          state.images.collage.splice(parseInt(collageRemove,10), 1);
+          markDirty();
+          renderCollage(true);
+          return;
+        }
         state[list].splice(parseInt(index,10), 1);
         markDirty();
         if (list === 'news') renderNews(true);
@@ -437,6 +480,29 @@
         reader.readAsDataURL(file);
       });
     });
+
+    // Photo collage — replace or add via the shared hidden file input
+    const collageFileInput = document.getElementById('file-collage');
+    if (collageFileInput) {
+      collageFileInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          state.images = state.images || {};
+          state.images.collage = state.images.collage || [];
+          if (collageEditIndex === -1) {
+            state.images.collage.push(ev.target.result);
+          } else {
+            state.images.collage[collageEditIndex] = ev.target.result;
+          }
+          markDirty();
+          renderCollage(true);
+        };
+        reader.readAsDataURL(file);
+        e.target.value = '';
+      });
+    }
 
     // Social links — click to edit URL instead of navigating
     document.querySelectorAll('[data-social-key]').forEach(link => {
