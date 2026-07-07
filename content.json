@@ -24,7 +24,7 @@
     {
       "id": "item-3",
       "name": "Bakery Bites Box",
-      "description": "A little box of soft-baked treats — carrot ginger, pumpkin oat, and PB banana.",
+      "description": "A little box of soft-baked treats — carrot ginger, pumpkin oat, and Peanut butter.",
       "price": "$7.50"
     },
     {
@@ -47,10 +47,26 @@
     }
   ],
   "schedule": [
-    { "day": "Thursday", "place": "Riverside Dog Park", "time": "4:00 – 7:00 PM" },
-    { "day": "Friday", "place": "Maple Street Farmers Market", "time": "3:00 – 6:30 PM" },
-    { "day": "Saturday", "place": "Downtown Plaza", "time": "11:00 AM – 3:00 PM" },
-    { "day": "Sunday", "place": "West View Community Field", "time": "12:00 – 4:00 PM" }
+    {
+      "day": "Thursday",
+      "place": "Riverside Dog Park",
+      "time": "4:00 – 7:00 PM"
+    },
+    {
+      "day": "Friday",
+      "place": "Maple Street Farmers Market",
+      "time": "3:00 – 6:30 PM"
+    },
+    {
+      "day": "Saturday",
+      "place": "Downtown Plaza",
+      "time": "11:00 AM – 3:00 PM"
+    },
+    {
+      "day": "Sunday",
+      "place": "West View Community Field",
+      "time": "12:00 – 4:00 PM"
+    }
   ],
   "about": {
     "paragraph1": "Penny's Pup Truck started as one very good dog's excuse for her owner to bake too many treats. Now she rides shotgun on every route, quality-checking each batch of pup cups before they go out the window.",

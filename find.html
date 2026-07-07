@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Find The Truck — Penny's Pup Truck</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,700&display=swap" rel="stylesheet">
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap">
+    <a href="index.html" class="logo">
+      <img src="images/logo.jpg" alt="Penny" class="logo-icon" id="nav-logo-img">
+      Penny's Pup Truck
+    </a>
+    <ul>
+      <li><a href="menu.html">Menu</a></li>
+      <li><a href="find.html">Find Us</a></li>
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="index.html#follow">Follow</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="edit-mode-banner">✏️ You're editing this site — click any text or photo to change it, use the + buttons to add items, then hit "Save changes" below when you're done. Add an address to a stop so visitors can get directions.</div>
+
+<section class="page-header">
+  <div class="wrap">
+    <h1>Find The Truck</h1>
+    <p>Penny moves around — here's this week's route. Tap any stop for directions.</p>
+  </div>
+</section>
+
+<section id="find" class="find">
+  <div class="wrap">
+    <div class="schedule" id="schedule-list"></div>
+    <a href="index.html" class="back-home-link" style="color:var(--white); border-color:var(--white);">← Back to home</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="logo">🐾 <span id="footer-name">Penny's Pup Truck</span></div>
+    <p id="footer-tagline">Serving pup cups &amp; cute dog things around town.</p>
+    <p>© <span id="year"></span> <span id="footer-name-2">Penny's Pup Truck</span>. All good dogs welcome.</p>
+    <p><button type="button" class="admin-btn" id="admin-open-btn">Admin</button></p>
+  </div>
+</footer>
+
+<div class="signin-overlay" id="signin-overlay" style="display:none;">
+  <div class="signin-card">
+    <button type="button" class="signin-close" id="signin-close-btn">&times;</button>
+    <h3>🐾 Admin Sign In</h3>
+    <p>Sign in with the Google account that manages this site.</p>
+    <div id="google-signin-button"></div>
+    <div id="signin-status"></div>
+  </div>
+</div>
+
+<div class="admin-toolbar" id="admin-toolbar" style="display:none;">
+  <span class="status" id="admin-status">Editing</span>
+  <div class="actions">
+    <button class="save-btn" id="edit-save-btn">Save changes</button>
+    <button class="exit-btn" id="edit-signout-btn">Sign out</button>
+  </div>
+</div>
+
+<input type="file" id="file-navLogo" accept="image/*" style="display:none">
+<input type="file" id="file-truck" accept="image/*" style="display:none">
+<input type="file" id="file-aboutPhoto" accept="image/*" style="display:none">
+
+<div class="directions-overlay" id="directions-overlay">
+  <div class="directions-card">
+    <button type="button" class="directions-close" id="directions-close-btn">&times;</button>
+    <h3>Get Directions</h3>
+    <p id="directions-place-name"></p>
+    <a href="#" target="_blank" rel="noopener" class="map-choice-btn" id="directions-google-link">Open in Google Maps</a>
+    <a href="#" target="_blank" rel="noopener" class="map-choice-btn" id="directions-apple-link">Open in Apple Maps</a>
+  </div>
+</div>
+
+<script src="site.js"></script>
+</body>
+</html>
